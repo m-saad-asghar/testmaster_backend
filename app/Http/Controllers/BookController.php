@@ -59,4 +59,19 @@ class BookController extends Controller
             ]);
         }
     }
+    public function get_books(Request $request)
+    {
+        $books = DB::table('books')
+        ->select(
+            'books.id as id',
+            'books.name as bookname',
+        )
+        ->get();
+        
+        return response()->json([
+            "success" => 1,
+            "books" => $books
+        ]);
+
+    }
 }

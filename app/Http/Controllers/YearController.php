@@ -17,4 +17,15 @@ class YearController extends Controller
             "years" => $years
         ]);
     }
+    public function get_exam_years(Request $request){
+        $years = DB::table('exam_year')
+        ->where('active', 1)
+        ->select('id', 'name')
+        ->get();
+        return response()->json([
+            "success" => "true",
+            "years" => $years
+        ]);
+    }
+    
 }
