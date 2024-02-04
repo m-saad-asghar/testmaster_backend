@@ -69,6 +69,15 @@ class BookController extends Controller
         ->leftJoin('subject', 'books.subject_id', '=', 'subject.id')
         ->leftJoin('level', 'books.level_id', '=', 'level.id')
         ->leftJoin('syllabus', 'syllabus.id', '=', 'book_syllabus.syllabus_id')
+        ->where(function ($query) use ($request) {
+            if($request->search_term !== ""){
+                $query->where('books.name', 'LIKE', '%' . $request->search_term . '%')
+                    ->orWhere('books.publisher', 'LIKE', '%' . $request->search_term . '%')
+                    ->orWhere('subject.title', 'LIKE', '%' . $request->search_term . '%')
+                    ->orWhere('level.title', 'LIKE', '%' . $request->search_term . '%')
+                    ->orWhere('syllabus.name', 'LIKE', '%' . $request->search_term . '%');
+            }
+        })
         ->select(
             'books.id as id',
             'books.name as bookName',
