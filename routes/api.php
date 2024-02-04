@@ -39,5 +39,6 @@ Route::post('/get-specific-units', [UnitController::class, 'get_specific_units']
 Route::get('/get-units-of-book/{id}', [UnitController::class, 'get_units_of_book']);
 Route::post('/add-question', [QuestionController::class, 'add_question']);
 Route::post('/add_new_book', [BookController::class, 'add_new_book']);
-Route::get('/get-books', [BookController::class, 'get_books']);
-Route::get('/get-topics-of-unit/{id}', [TopicController::class, 'get_topics_of_unit']);
+Route::post('/get_books', [BookController::class, 'get_books']);
+Route::put('/change_status_book/{id}', [BookController::class, 'change_status_book']);
+Route::put('/update_book/{id}', [BookController::class, 'update_book']);
