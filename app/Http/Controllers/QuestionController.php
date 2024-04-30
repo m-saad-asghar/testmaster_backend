@@ -53,4 +53,39 @@ class QuestionController extends Controller
         ]);
 
     }
+    public function addQuestion(Request $request){
+        $years = $request -> years;
+        $questionType = count($years) != 0 ? "PastPaper" : "None";
+        $answers = $request->answers;
+
+        $id = DB::table('exam_questions')
+        ->insertGetId([
+            "question" => $request -> question,
+            "topic_id" => $request -> topicId,
+            "type" => $questionType
+
+        ]);
+        if (count($years) != 0){
+            foreach ($years as $y) {
+                DB::table('question_year')
+                    ->insert([
+                        "question_id" => $id,
+                        "year_id" => $y
+                    ]);
+            }
+
+        }
+        foreach ($answers as $ans) {
+            DB::table('answers')
+                ->insert([
+                    "question_id" => $id,
+                    "answer" => $ans['input'],
+                    "type" => ($ans['option'] == "selected") ? '1' : '0'
+                ]);
+        }
+
+        return response()->json([
+            "success" => "true"
+        ]);
+    }
 }

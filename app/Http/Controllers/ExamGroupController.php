@@ -17,4 +17,14 @@ class ExamGroupController extends Controller
             "exam_groups" => $exam_groups
         ]);
     }
+    public function getGroups(Request $request){
+        $exam_groups = DB::table('exam_group')
+        ->where('active', 1)
+        ->select('id', 'title as name')
+        ->get();
+        return response()->json([
+            "success" => 1,
+            "groups" => $exam_groups
+        ]);
+    }
 }

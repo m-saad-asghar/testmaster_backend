@@ -19,4 +19,17 @@ class TopicController extends Controller{
             "topics" => $topics
         ]);
     }
+    public function add_topic_of_unit(Request $request){
+        $unit = DB::table('topics')
+        ->insert([
+            "name" => $request -> topicName,
+            "unit_id" => $request -> unitId
+            
+        ]);
+
+        return response()->json([
+            "success" => 1
+            
+        ]);
+    }
 }
