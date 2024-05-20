@@ -27,5 +27,27 @@ class YearController extends Controller
             "years" => $years
         ]);
     }
+    public function addYear(Request $request){
+        $id = DB::table('exam_year')
+        ->insertGetId([
+            "name" => $request -> name,
+            "board" => $request -> board,
+            "exam_group" => $request -> exam_group,
+            "session" => $request -> session,
+            "year" => $request -> year
+
+        ]);
+
+        if ($id > 0){
+            return response()->json([
+                "success" => 1
+            ]);
+        }
+        else{
+            return response()->json([
+                "success" => 0
+            ]);
+        }
+    }
     
 }

@@ -45,4 +45,14 @@ class UnitController extends Controller
         ]);
 
     }
+    public function add_unit_of_book(Request $request){
+        $unit = DB::table('unit')
+        ->insert([
+            "name" => $request -> unitName,
+            "book_id" => $request -> bookId
+            
+        ]);
+
+        
+    }
 }
