@@ -99,6 +99,8 @@ return [
         ],
     ],
 
+    'password_hash' => PASSWORD_BCRYPT,
+
     /*
     |--------------------------------------------------------------------------
     | Password Confirmation Timeout
