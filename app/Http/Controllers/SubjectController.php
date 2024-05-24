@@ -4,9 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\SubjectModel;
 
 class SubjectController extends Controller
 {
+    public function get_subjects(Request $request) {
+        $subjects = SubjectModel::with(['books' => function ($query) {
+            $query->where('books.active', 1)
+                  ->join('level', 'books.level_id', '=', 'level.id')
+                  ->select('books.*', 'level.title as level_title');
+        }])->get();
+        return response()->json([
+            "success" => 1,
+            "subjects" => $subjects
+        ]);
+    }
+
     public function index(Request $request)
     {
         $subjects = DB::table('subject')
