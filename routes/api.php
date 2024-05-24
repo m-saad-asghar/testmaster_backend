@@ -30,6 +30,13 @@ Route::group(['prefix' => 'auth'], function($router){
     // Route::post('/register', [AuthController::class, 'register']);
     Route::any('/login', [AuthController::class, 'login'])->name("login");
 });
+
+    // Test Routes Start
+    Route::get('/get_subjects', [SubjectController::class, 'get_subjects']);
+    Route::post('/get_practice_question', [QuestionController::class, 'get_practice_question']);
+    Route::post('/get_units', [QuestionController::class, 'get_units']);
+     // Test Routes End
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
