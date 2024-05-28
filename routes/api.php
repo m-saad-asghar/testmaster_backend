@@ -7,6 +7,7 @@ use App\Http\Controllers\UnitController;
 use App\Http\Controllers\YearController;
 use App\Http\Controllers\ExamGroupController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\SyllabusController;
 use App\Http\Controllers\TopicController;
@@ -31,11 +32,16 @@ Route::group(['prefix' => 'auth'], function($router){
     Route::any('/login', [AuthController::class, 'login'])->name("login");
 });
 
-    // Test Routes Start
+    // User Panel Routes Start
     Route::get('/get_subjects', [SubjectController::class, 'get_subjects']);
     Route::post('/get_practice_question', [QuestionController::class, 'get_practice_question']);
     Route::post('/get_units', [QuestionController::class, 'get_units']);
-     // Test Routes End
+    Route::get('/get_all_subjects', [SubjectController::class, 'get_all_subjects']);
+    Route::post('/get_selected_books', [BookController::class, 'get_selected_books']);
+    Route::post('/add_test', [SettingController::class, 'add_test']);
+    Route::get('/get_setting', [SettingController::class, 'get_setting']);
+    Route::get('/get_setting_with_units', [SettingController::class, 'get_setting_with_units']);
+     // User Panel Routes End
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

@@ -32,6 +32,18 @@ class SubjectController extends Controller
         ]);
     }
 
+    public function get_all_subjects(Request $request) {
+        $subjects = SubjectModel::where("active", 1)
+        ->orderBy("title", "asc")
+        ->select(["id", "title"])
+        ->get();
+        
+        return response()->json([
+            "success" => 1,
+            "subjects" => $subjects
+        ]);
+    }
+
     public function get_specific_subject($id)
     {
         $subjects = DB::table('subject')
