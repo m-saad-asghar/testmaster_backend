@@ -5,9 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Mockery\Undefined;
+use App\Models\BookModel;
 
 class BookController extends Controller
 {
+
+    public function get_selected_books(Request $request) {
+        $books = BookModel::where("subject_id", $request->subject_id)
+        ->where("active", 1)
+        ->orderBy("name", "asc")
+        ->select(["id", "name"])
+        ->get();
+        
+        return response()->json([
+            "success" => 1,
+            "books" => $books
+        ]);
+    }
+
     public function add_new_book(Request $request)
     {
         $id = DB::table('books')
