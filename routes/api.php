@@ -11,6 +11,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\SyllabusController;
 use App\Http\Controllers\TopicController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\SessionController;
 use Illuminate\Http\Request;
@@ -41,6 +42,7 @@ Route::group(['prefix' => 'auth'], function($router){
     Route::post('/add_test', [SettingController::class, 'add_test']);
     Route::get('/get_setting', [SettingController::class, 'get_setting']);
     Route::get('/get_setting_with_units', [SettingController::class, 'get_setting_with_units']);
+    Route::post('/save_test_logs', [LogController::class, 'save_test_logs']);
      // User Panel Routes End
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
