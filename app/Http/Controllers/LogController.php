@@ -29,7 +29,7 @@ class LogController extends Controller
                 ]);
 
             $id = DB::table('test_logs')
-            ->insert([
+            ->insertGetId([
              "question_id" => $request->question_id,
              "answer_id" => $request->answer_id,
              "status" => $request->status,
@@ -39,7 +39,8 @@ class LogController extends Controller
                  if ($id >= 0){
                 return response()->json([
                     "success" => 1,
-                    "test_reference" => $test_reference
+                    "test_reference" => $test_reference,
+                    "log_id" => $id
                 ]);
             }else{
                 return response()->json([
@@ -49,8 +50,27 @@ class LogController extends Controller
 
         }
         else{
-            $id = DB::table('test_logs')
-            ->insert([
+            $prev_record = DB::table('test_logs')
+            ->where("id", $request->test_log_id)
+            ->first();
+            if($prev_record) {
+                $id = DB::table('test_logs')
+                ->where('id', $request->test_log_id)
+                ->update([
+                 "answer_id" => $request->answer_id,
+                ]);
+                if ($id >= 0){
+                    return response()->json([
+                        "success" => 1
+                    ]);
+                }else{
+                    return response()->json([
+                        "success" => 0,
+                    ]);
+                }
+            }else{
+                $id = DB::table('test_logs')
+            ->insertGetId([
              "question_id" => $request->question_id,
              "answer_id" => $request->answer_id,
              "status" => $request->status,
@@ -59,12 +79,14 @@ class LogController extends Controller
 
                  if ($id >= 0){
                 return response()->json([
-                    "success" => 1
+                    "success" => 1,
+                    "log_id" => $id
                 ]);
             }else{
                 return response()->json([
                     "success" => 0,
                 ]);
+            }
             }
         }
     }
