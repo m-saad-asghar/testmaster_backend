@@ -31,19 +31,23 @@ use App\Http\Controllers\AuthController;
 Route::group(['prefix' => 'auth'], function($router){
     // Route::post('/register', [AuthController::class, 'register']);
     Route::any('/login', [AuthController::class, 'login'])->name("login");
+    Route::get('/logout', [AuthController::class, 'logout'])->name("logout");
+    
 });
 
-    // User Panel Routes Start
-    Route::get('/get_subjects', [SubjectController::class, 'get_subjects']);
-    Route::post('/get_practice_question', [QuestionController::class, 'get_practice_question']);
-    Route::post('/get_units', [QuestionController::class, 'get_units']);
-    Route::get('/get_all_subjects', [SubjectController::class, 'get_all_subjects']);
-    Route::post('/get_selected_books', [BookController::class, 'get_selected_books']);
-    Route::post('/add_test', [SettingController::class, 'add_test']);
-    Route::get('/get_setting', [SettingController::class, 'get_setting']);
-    Route::get('/get_setting_with_units', [SettingController::class, 'get_setting_with_units']);
-    Route::post('/save_test_logs', [LogController::class, 'save_test_logs']);
-     // User Panel Routes End
+Route::group(['middleware' => 'auth:api'], function($router){
+// User Panel Routes Start
+Route::get('/get_subjects', [SubjectController::class, 'get_subjects']);
+Route::post('/get_practice_question', [QuestionController::class, 'get_practice_question']);
+Route::post('/get_units', [QuestionController::class, 'get_units']);
+Route::get('/get_all_subjects', [SubjectController::class, 'get_all_subjects']);
+Route::post('/get_selected_books', [BookController::class, 'get_selected_books']);
+Route::post('/add_test', [SettingController::class, 'add_test']);
+Route::get('/get_setting', [SettingController::class, 'get_setting']);
+Route::get('/get_setting_with_units', [SettingController::class, 'get_setting_with_units']);
+Route::post('/save_test_logs', [LogController::class, 'save_test_logs']);
+ // User Panel Routes End
+});  
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
