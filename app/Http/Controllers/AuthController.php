@@ -11,6 +11,13 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
+    public function logout(Request $request){
+        // auth()->logout();
+            return response()->json([
+                "success" => 1,
+                "message" => 'User is successfully logout'
+            ]);
+    }
     public function login(Request $request){
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email',
