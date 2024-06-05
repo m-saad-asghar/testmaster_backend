@@ -24,6 +24,8 @@ class User extends Authenticatable implements JWTSubject
         'password',
     ];
 
+    public $timestamps = false;
+
     /**
      * The attributes that should be hidden for serialization.
      *

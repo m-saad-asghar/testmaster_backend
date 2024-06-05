@@ -29,9 +29,9 @@ use App\Http\Controllers\AuthController;
 |
 */
 Route::group(['prefix' => 'auth'], function($router){
-    // Route::post('/register', [AuthController::class, 'register']);
     Route::any('/login', [AuthController::class, 'login'])->name("login");
     Route::get('/logout', [AuthController::class, 'logout'])->name("logout");
+    Route::any('/register', [AuthController::class, 'register'])->name("register");
     
 });
 
