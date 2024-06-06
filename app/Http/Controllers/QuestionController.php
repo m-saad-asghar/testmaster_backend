@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\QuestionModel;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
@@ -133,7 +134,7 @@ class QuestionController extends Controller
         $unit = $request->unit;
         $year = $request->year;
         $question = $request->question;
-
+        $user_id = Auth::id();
         $question_id = DB::table('questions')
             ->insertGetId([
                 "title" => $question,
@@ -141,7 +142,7 @@ class QuestionController extends Controller
                 "unit_id" => $unit,
                 "subject_id" => $subject,
                 "exam_group" => $exam_group,
-                "user_id" => 6,
+                "user_id" => $user_id,
                 "type" => (count($year) == 0) ? "mcq" : "pastpaper"
             ]);
 
