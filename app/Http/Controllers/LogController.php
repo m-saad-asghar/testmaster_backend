@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\LogModel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class LogController extends Controller
 {
@@ -20,10 +21,11 @@ class LogController extends Controller
     public function save_test_logs(Request $request) {
 
         if($request->test_reference == ""){
+            $user_id = Auth::id();
             $test_reference = $this->generateTestReference();
                 DB::table('test_record')
                 ->insert([
-                "user_id" => 6,
+                "user_id" => $user_id,
                 "type" => $request->test_type,
                 "reference" => $test_reference
                 ]);
