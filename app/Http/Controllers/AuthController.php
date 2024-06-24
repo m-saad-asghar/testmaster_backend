@@ -18,6 +18,10 @@ class AuthController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required|string|min:6',
             'phone' => 'required|string|regex:/^\+?[0-9]{10,15}$/|unique:users',
+            'dob' => 'required|date|before:today',
+            'gender' => 'required|in:male,female',
+            'city' => 'required|string|max:255',
+            'college' => 'required|string',
         ], [
             'name.required' => 'The Name Field is Required.',
             'name.string' => 'The Name Must be a String.',
@@ -38,6 +42,16 @@ class AuthController extends Controller
             'phone.string' => 'The Phone Number must be a String.',
             'phone.regex' => 'The phone Number Format is Invalid. It Must be between 10 to 15 Digits.',
             'phone.unique' => 'The Phone Number is Already Exist.',
+            'dob.required' => 'Date of birth is Required.',
+            'dob.date' => 'Date of birth format is Incorrect.',
+            'dob.before' => 'Date of birth format is Invalid.',
+            'gender.required' => 'Gender is Required.',
+            'gender.in' => 'Gender must be either Male or Female.',
+            'city.required' => 'City is Required.',
+            'city.string' => 'City must be String.',
+            'city.max' => 'The City may not be Greater than 255 Characters.',
+            'college.required' => 'College Name is Required.',
+            'college.string' => 'College Name must be String.'
         ]);
     
         if ($validator->fails()) {
@@ -53,6 +67,11 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'phone' => $request->phone,
+            'dob' => $request->dob,
+            'college' => $request->college,
+            'gender' => $request->gender,
+            'city' => $request->city,
+            'address' => $request->address
         ]);
         
         $token = JWTAuth::fromUser($user);
