@@ -35,6 +35,8 @@ Route::group(['prefix' => 'auth'], function($router){
     
 });
 
+Route::post('/get_book_state', [BookController::class, 'get_book_stats']);
+
 Route::group(['middleware' => 'auth:api'], function($router){
 // User Panel Routes Start
 Route::get('/get_subjects', [SubjectController::class, 'get_subjects']);

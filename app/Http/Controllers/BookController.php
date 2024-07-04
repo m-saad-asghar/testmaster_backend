@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Mockery\Undefined;
 use App\Models\BookModel;
+use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
@@ -20,6 +21,49 @@ class BookController extends Controller
         return response()->json([
             "success" => 1,
             "books" => $books
+        ]);
+    }
+
+    public function get_book_stats(Request $request){
+        // $user_id = Auth::id();
+        $user_id = 6;
+        $total_questions_ids = DB::table("exam_questions")
+        ->whereIn("topic_id", function ($query) use ($request) {
+            $query->select("id")
+                ->from("topics")
+                ->whereIn("unit_id", function ($query) use ($request) {
+                    $query->select("id")
+                        ->from("unit")
+                        ->where("book_id", $request->book_id)
+                        ->where("active", 1);
+                });
+        })
+        ->pluck("id")
+        ->toArray();
+
+        $total_questions_solved = DB::table('test_logs as tl')
+        ->select('tl.question_id', 'tl.answer_id', 'tl.status', 'tl.reference_id')
+        ->join('test_record as tr', 'tr.reference', '=', 'tl.reference_id')
+        ->where('tr.user_id', $user_id)
+        ->whereIn('tl.question_id', $total_questions_ids)
+        ->distinct()
+        ->count();
+
+        $total_questions_correct = DB::table('test_logs as tl')
+        ->select('tl.question_id', 'tl.answer_id', 'tl.status', 'tl.reference_id')
+        ->join('test_record as tr', 'tr.reference', '=', 'tl.reference_id')
+        ->where('tr.user_id', $user_id)
+        ->where('tl.status', 1)
+        ->whereIn('tl.question_id', $total_questions_ids)
+        ->distinct()
+        ->count();
+        
+        return response()->json([
+            "success" => 1,
+            "total_questions" => count($total_questions_ids),
+            "total_questions_solved" => $total_questions_solved,
+            "total_questions_correct" => $total_questions_correct,
+            "total_questions_wrong" => $total_questions_solved - $total_questions_correct
         ]);
     }
 
