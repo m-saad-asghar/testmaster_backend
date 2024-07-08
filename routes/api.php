@@ -47,6 +47,7 @@ Route::get('/get_setting', [SettingController::class, 'get_setting']);
 Route::get('/get_setting_with_units', [SettingController::class, 'get_setting_with_units']);
 Route::post('/save_test_logs', [LogController::class, 'save_test_logs']);
 Route::post('/get_book_state', [BookController::class, 'get_book_stats']);
+Route::post('/get_questions_by_year', [QuestionController::class, 'get_questions_by_year']);
  // User Panel Routes End
 });  
 
