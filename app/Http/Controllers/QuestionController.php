@@ -81,6 +81,7 @@ class QuestionController extends Controller
 
     public function get_questions_by_year(Request $request)
     {
+        $perpage= $request->input("perPage");
         $exam_questions = DB::table('exam_questions')
         ->join('question_year', 'exam_questions.id', '=', 'question_year.question_id')
         ->join('exam_year', 'question_year.year_id', '=', 'exam_year.id')
@@ -89,7 +90,7 @@ class QuestionController extends Controller
         ->whereIn('exam_year.name', $request->years)
         ->select('exam_questions.id', 'exam_questions.question', DB::raw('JSON_ARRAYAGG(answers.answer) as answers'))
         ->groupBy('exam_questions.id', 'exam_questions.question')
-        ->get();
+        ->paginate($perpage);
 
     foreach ($exam_questions as $question) {
         if ($question->answers) {
